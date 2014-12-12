@@ -48,7 +48,8 @@ class ArtNet(threading.Thread):
     universe_count = 1
     universes = [bytearray([0] * 513),]
 	# own_ip = "192.168.178.20"
-    own_ip = "192.168.5.124"
+    # own_ip = "192.168.5.124"
+    own_ip = "0.0.0.0"
     nodes = []
     
     def __init__(self, address=(0, 0), hibernate=False, use_unicast=False, ignore_local_data=True, data_length=512):
