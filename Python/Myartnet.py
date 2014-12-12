@@ -152,7 +152,7 @@ class ArtNet(threading.Thread):
             if data[:8] != 'Art-Net\x00':
                 continue
             opcode = struct.unpack('<H', data[8:10])[0]
-            print "Received OpCode: %s" % opcode
+            print "Received OpCode: %#x" % opcode
             if opcode == opcode_ArtDMX:
                 self.handle_ArtDMX(data, addr)
             elif opcode == opcode_ArtPoll:
@@ -342,8 +342,22 @@ class ArtNet(threading.Thread):
         # Protocol Version 14, High Byte first
         content.append(struct.pack('>H', 14))
         # TalkToMe
-        content.append(struct.pack('>H', 0b00000000))
-        content.append(chr(0xe0))
+        # bit oriented data
+        #	7 	not used
+        #	6	" transmit as Zero
+        #	5	"
+        #	4	"
+        #	3	1 if Diagnostics messages are unicast / 0 for broadcast
+        #	2	1 send me diagnostics messages / 0 Do not send me diag mess
+        #	1	0	Only send ArtPollReply in response to an ArtPoll or ArtAddress.
+        #		1	Send ArtPollReply whenever Node conditions change.
+        #			This selection allows the Controller to be informed of
+		#			changes without the need to continuously poll
+        #	0	0
+        #
+        content.append(struct.pack('>H', 0b00000010))
+        # Priority 
+        content.append(chr(0xe0)) 			# DpCritical 
         self.ArtPoll_content = "".join(content)
     
     def build_ip_check(self):
