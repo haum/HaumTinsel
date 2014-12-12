@@ -47,8 +47,8 @@ class ArtNet(threading.Thread):
     data_length = 512
     universe_count = 1
     universes = [bytearray([0] * 513),]
-	# own_ip = "192.168.178.20"
-    # own_ip = "192.168.5.124"
+    # own_ip = "192.168.178.20"
+    own_ip = "192.168.5.124"
     own_ip = "0.0.0.0"
     nodes = []
     
@@ -107,8 +107,8 @@ class ArtNet(threading.Thread):
             self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            # self.s.bind(("", 6454))
-            self.s.bind((self.own_ip, 6454))
+            self.s.bind(("", 6454))
+            # self.s.bind((self.own_ip, 6454))
             self.s.sendto("ping", ("<broadcast>", 60000))
             self.socket_open = True
             return True
@@ -343,21 +343,21 @@ class ArtNet(threading.Thread):
         content.append(struct.pack('>H', 14))
         # TalkToMe
         # bit oriented data
-        #	7 	not used
-        #	6	" transmit as Zero
-        #	5	"
-        #	4	"
-        #	3	1 if Diagnostics messages are unicast / 0 for broadcast
-        #	2	1 send me diagnostics messages / 0 Do not send me diag mess
-        #	1	0	Only send ArtPollReply in response to an ArtPoll or ArtAddress.
-        #		1	Send ArtPollReply whenever Node conditions change.
-        #			This selection allows the Controller to be informed of
-		#			changes without the need to continuously poll
-        #	0	0
+        #   7   not used
+        #   6   " transmit as Zero
+        #   5   "
+        #   4   "
+        #   3   1 if Diagnostics messages are unicast / 0 for broadcast
+        #   2   1 send me diagnostics messages / 0 Do not send me diag mess
+        #   1   0   Only send ArtPollReply in response to an ArtPoll or ArtAddress.
+        #       1   Send ArtPollReply whenever Node conditions change.
+        #           This selection allows the Controller to be informed of
+        #           changes without the need to continuously poll
+        #   0   0
         #
         content.append(struct.pack('>H', 0b00000010))
         # Priority 
-        content.append(chr(0xe0)) 			# DpCritical 
+        content.append(chr(0xe0))           # DpCritical 
         self.ArtPoll_content = "".join(content)
     
     def build_ip_check(self):
