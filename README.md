@@ -12,6 +12,14 @@ en un diagramme:
 
 -------------------------
 
+Lorsque le dépôt est cloné, il faut penser à charger les submodules pour avoir les dépendances permettant de construire le programme pour Arduino.
+
+```
+git submodule init
+git submodule update
+```
+-------------------------
+
 #### Quelques docs de travail et de debug
 Dans Doc/
 

@@ -1,0 +1,3 @@
+[submodule "ArduinoArtNet"]
+	path = ArduinoArtNet
+	url = git@github.com:jblb/ArduinoArtNet.git
