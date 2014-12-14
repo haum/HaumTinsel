@@ -49,13 +49,13 @@ def add_flake(code):
 def home():
     return static('index.html')
 
-@route('/add/<int>')
+@route('/add/<code:int>')
 def add_flake():
     if BASE_ADDR != request.headers.get('Referer'):
         # do not try to cheat... the redirect is permanent
         return redirect('http://haum.org', code=301)
     else:
-        add_flake(color_from_pseudo(pseudo))
+        add_flake(code)
         return {'status': 'ok'}
 
 if __name__=='__main__':
