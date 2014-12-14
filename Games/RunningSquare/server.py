@@ -3,7 +3,7 @@
 import serial
 import threading
 from time import sleep
-from bottle import route, run, request, redirect
+from bottle import route, run, request, redirect, static_file
 
 STATIC_ROOT="static/"
 BASE_ADDR="http://localhost:8080/"
