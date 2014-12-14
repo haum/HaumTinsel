@@ -77,6 +77,7 @@
 numequipe = -1;
 target = null;
 score = 0;
+played = false;
 
 String.prototype.hashCode = function() {
   var hash = 0, i, chr, len;
@@ -90,10 +91,13 @@ String.prototype.hashCode = function() {
 };
 
 function game_win() {
-	jQuery.ajax('/add/' + numequipe).success(function() {
-		score = score + 1;
-		$('#color').html('+' + score);
-	});
+	if (played == false) {
+		jQuery.ajax('/add/' + numequipe).success(function() {
+			score = score + 1;
+			$('#color').html('+' + score);
+		});
+		played = true;
+	}
 }
 
 function game_hide() {
@@ -102,6 +106,7 @@ function game_hide() {
 }
 
 function game_show() {
+	played = false;
 	target.css('top', (Math.random()*80)+'%');
 	target.css('left', (Math.random()*80)+'%');
 	target.show();
