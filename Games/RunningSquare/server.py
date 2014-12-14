@@ -51,10 +51,10 @@ def home():
 
 @route('/add/<code:int>')
 def game_win(code):
-    if BASE_ADDR != request.headers.get('Referer'):
-        # do not try to cheat... the redirect is permanent
-        return redirect('http://haum.org', code=301)
-    else:
+#    if BASE_ADDR != request.headers.get('Referer'):
+#        # do not try to cheat... the redirect is permanent
+#        return redirect('http://haum.org', code=301)
+#    else:
         add_flake(code)
         return {'status': 'ok'}
 
