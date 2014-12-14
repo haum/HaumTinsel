@@ -116,8 +116,9 @@ function start_game() {
 		hash = pseudo.hashCode();
 		if (hash < 0) hash = -hash;
 		numequipe =  hash % 4;
-		$('body').html('<div id="game"><div id="color" class="color' + numequipe  + '"></div><div id="color2" class="color' + numequipe  + '"></div><div id="target" ><img src="/static/noel.png" onclick="game_win()"/></div></div>');
+		$('body').html('<div id="game"><div id="color" class="color' + numequipe  + '"></div><div id="color2" class="color' + numequipe  + '"></div><div id="target" ><img src="/static/noel.png"/></div></div>');
 		target = $('#target');
+		target.on('touchstart click', function() { game_win() });
 		game_hide();
 	}
 }
