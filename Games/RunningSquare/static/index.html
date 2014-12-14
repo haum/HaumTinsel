@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>HAUMtinsel</title>
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<style>
+			html, body {
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}
+			#game {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: #fff;
+			}
+			#color {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 20px;
+			}
+			#color2 {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				height: 20px;
+			}
+			#target {
+				position: absolute;
+				width: 20%;
+			}
+			#target img {
+				width: 100%;
+			}
+			.color0 {
+				background: #ff0;
+			}
+			.color1 {
+				background: #0ff;
+			}
+			.color2 {
+				background: #f0f;
+			}
+			.color3 {
+				background: #f00;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>HAUMtinsel</h1>
+		<p><img src="/static/noel.png" /></p>
+		<p>L'association <a href="http://haum.org/">HAUM, Hackerspace au Mans</a>, vous propose une guirlande connectée avec laquelle vous pouvez jouer grâce à ce site web. Le principe est simple :</p>
+		<ol>
+			<li>Choisissez un pseudonyme (nous ne l'enregistrons pas) qui déterminera la couleur de l'équipe dans laquelle vous jouez</li>
+			<li>Cliquez sur l'image qui apparaît brièvement. À chaque clic réussi, une led de votre couleur s'ajoute sur la guirlande...</li>
+		</ol>
+		<p>Venez voir la guirlande au 19 boulevard Marie et Alexandre Oyon, proche de la gare (visible depuis la rue) et vérifiez si votre couleur est la plus présente !</p>
+		<div id="who">
+			<form action="#" onsubmit="start_game(); return false;">
+				<input type="text" id="pseudo" placeholder="Pseudonyme"/>
+				<input type="submit" value="Jouer !" />
+			</form>
+		</div>
+
+		<noscript><p>Ce jeu nécessite l'utilisation de JavaScript :-(</p></noscript>
+		<script type="text/javascript">
+numequipe = -1;
+target = null;
+score = 0;
+
+String.prototype.hashCode = function() {
+  var hash = 0, i, chr, len;
+  if (this.length == 0) return hash;
+  for (i = 0, len = this.length; i < len; i++) {
+    chr   = this.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};
+
+function game_win() {
+	jQuery.ajax('/add/' + numequipe).success(function() {
+		score = score + 1;
+		$('#color').html('+' + score);
+	});
+}
+
+function game_hide() {
+	target.hide();
+	setTimeout('game_show()', 1000);	
+}
+
+function game_show() {
+	target.css('top', (Math.random()*80)+'%');
+	target.css('left', (Math.random()*80)+'%');
+	target.show();
+	setTimeout('game_hide()', 500);	
+}
+
+function start_game() {
+	pseudo = $('#pseudo').val().trim();
+	if (!pseudo) {
+		alert("Veuillez saisir un pseudonyme");
+	} else {
+		hash = pseudo.hashCode();
+		if (hash < 0) hash = -hash;
+		numequipe =  hash % 4;
+		$('body').html('<div id="game"><div id="color" class="color' + numequipe  + '"></div><div id="color2" class="color' + numequipe  + '"></div><div id="target" ><img src="/static/noel.png" onclick="game_win()"/></div></div>');
+		target = $('#target');
+		game_hide();
+	}
+}
+		</script>
+	</body>
+
+</html>
