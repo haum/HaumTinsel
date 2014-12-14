@@ -37,7 +37,7 @@ class FlakeAdder(threading.Thread):
         self.run()
 
 
-@route('/static/<path:path>')
+@route('/static/<f:path>')
 def static(f):
     return static_file(f, root=STATIC_ROOT)
 
