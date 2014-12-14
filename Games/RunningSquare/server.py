@@ -20,8 +20,8 @@ class FlakeAdder(threading.Thread):
     def renew_conn(self):
         try:
             self.conn.close()
-    finally:
-        self.conn = Serial(self.iface, 115200)
+        finally:
+            self.conn = Serial(self.iface, 115200)
 
 
     def run(self):
