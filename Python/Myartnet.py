@@ -35,6 +35,7 @@ class Test():
         time.sleep(5)
         print artnet.own_ip
         print artnet.get_nodes()
+        # artnet.join()
 
 class ArtNet(threading.Thread):
     
@@ -48,7 +49,7 @@ class ArtNet(threading.Thread):
     universe_count = 1
     universes = [bytearray([0] * 513),]
     # own_ip = "192.168.178.20"
-    own_ip = "192.168.5.124"
+    # own_ip = "192.168.5.124"
     own_ip = "0.0.0.0"
     nodes = []
     
@@ -96,7 +97,7 @@ class ArtNet(threading.Thread):
                 if not self.socket_open:
                     self.open_socket()
                 if self.socket_open:
-                    self.set_own_ip()
+                    # self.set_own_ip()
                     self.ArtPoll()
                     self.server()
             # wait to check again for hibernate and possibility to open socket
@@ -148,7 +149,7 @@ class ArtNet(threading.Thread):
         print "ArtNet node started."
         while True:
             data, addr = recvfrom(4096)
-            print ".... Data in ...."
+            # print ".... Data in ...."
             if data[:8] != 'Art-Net\x00':
                 continue
             opcode = struct.unpack('<H', data[8:10])[0]
@@ -395,7 +396,7 @@ class ArtNet(threading.Thread):
         # UBEA Version -> Nope -> 0
         content.append(chr(0))
         # Status1
-        content.append(struct.pack('>H', 0b11010000))
+        content.append(struct.pack('>B', 0b11010000))
         # Manufacture ESTA Code
         content.append('LL')
         # Short Name
