@@ -16,26 +16,26 @@ class FlakeAdder(threading.Thread):
         threading.Thread.__init__(self)
 
         self.iface = iface
+        self.conn = serial.Serial(self.iface, 115200)
 
     def renew_conn(self):
         try:
             self.conn.close()
         finally:
-            self.conn = Serial(self.iface, 115200)
+            self.conn = serial.Serial(self.iface, 115200)
 
 
     def run(self):
         with open(FIFO,'r') as f:
-            while i in range(20):
-                try:
-                    code = str(f.readline()).trim()
-                    conn.write(code)
+            while True:
+#                try:
+                    code = str(f.readline()).strip()
+                    if code:
+                        self.conn.write(code + '\n')
+                        print code
                     sleep(0.3)
-                except:
-                    break 
-
-        self.run()
-
+#                except:
+#                    self.renew_conn()
 
 @route('/static/<f:path>')
 def static(f):
@@ -50,7 +50,7 @@ def home():
     return static('index.html')
 
 @route('/add/<code:int>')
-def add_flake():
+def game_win(code):
     if BASE_ADDR != request.headers.get('Referer'):
         # do not try to cheat... the redirect is permanent
         return redirect('http://haum.org', code=301)
