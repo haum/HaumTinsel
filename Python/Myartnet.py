@@ -35,7 +35,7 @@ class Test():
         time.sleep(5)
         print artnet.own_ip
         print artnet.get_nodes()
-        # artnet.join()
+        artnet.join()
 
 class ArtNet(threading.Thread):
     
@@ -49,8 +49,9 @@ class ArtNet(threading.Thread):
     universe_count = 1
     universes = [bytearray([0] * 513),]
     # own_ip = "192.168.178.20"
-    # own_ip = "192.168.5.124"
-    own_ip = "0.0.0.0"
+    # own_ip = "192.168.0.198"
+    own_ip = "192.168.5.124"
+    # own_ip = "0.0.0.0"
     nodes = []
     
     def __init__(self, address=(0, 0), hibernate=False, use_unicast=False, ignore_local_data=True, data_length=512):
@@ -149,7 +150,7 @@ class ArtNet(threading.Thread):
         print "ArtNet node started."
         while True:
             data, addr = recvfrom(4096)
-            # print ".... Data in ...."
+            print ".... Data in .... from %s " % addr[0]
             if data[:8] != 'Art-Net\x00':
                 continue
             opcode = struct.unpack('<H', data[8:10])[0]
@@ -167,7 +168,7 @@ class ArtNet(threading.Thread):
                     print "stop server"
                     break
             else:
-                print "Received unknown package. OpCode: %s" % opcode
+                print "Received unknown package. OpCode: %#x" % opcode
         # clean up
         self.s.close()
         self.socket_open = False
