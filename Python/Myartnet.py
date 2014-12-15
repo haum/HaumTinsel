@@ -403,6 +403,32 @@ class ArtNet(threading.Thread):
         content.append('luminosus-server2\x00')
         # Long Name
         content.append('luminosus-server2_ArtNet_Node' + '_' * 34 + '\x00')
+        # Node Report
+        # NumPortHi
+        # NumPortLow
+        # PortType[4]
+        # Good Input[4]
+        # Good Output[4]
+        # Swin[4]
+        # SwOut[4]
+        # SwVideo
+        # SwMacro
+        # SwRemote
+        # Spare
+        # Spare
+        # Spare
+        # Style
+        # MAC Hi
+        # MAC
+        # MAC
+        # MAC
+        # MAC
+        # MAC Low
+        # BindIp[4]
+        # BindIndex
+        # Status2
+        # Filler
+        
         # stitch together
         self.ArtPollReply_content = ''.join(content)
         #print self.lang['send_ArtPollReply']
