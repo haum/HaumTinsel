@@ -114,7 +114,7 @@ function game_show() {
 }
 
 function start_game() {
-	pseudo = $('#pseudo').val().trim();
+	pseudo = $('#pseudo').val().trim().toLowerCase();
 	if (!pseudo) {
 		alert("Veuillez saisir un pseudonyme");
 	} else {
