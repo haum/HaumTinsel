@@ -58,7 +58,7 @@
 
 	<body>
 		<h1>HAUMtinsel</h1>
-		<p><img src="/static/noel.png" /></p>
+		<p><img src="http://haum.org/images/noel.png" /></p>
 		<p>L'association <a href="http://haum.org/">HAUM, Hackerspace au Mans</a>, vous propose une guirlande connectée avec laquelle vous pouvez jouer grâce à ce site web. Le principe est simple :</p>
 		<ol>
 			<li>Choisissez un pseudonyme (nous ne l'enregistrons pas) qui déterminera la couleur de l'équipe dans laquelle vous jouez</li>
@@ -121,7 +121,7 @@ function start_game() {
 		hash = pseudo.hashCode();
 		if (hash < 0) hash = -hash;
 		numequipe =  hash % 4;
-		$('body').html('<div id="game"><div id="color" class="color' + numequipe  + '"></div><div id="color2" class="color' + numequipe  + '"></div><div id="target" ><img src="/static/noel.png"/></div></div>');
+		$('body').html('<div id="game"><div id="color" class="color' + numequipe  + '"></div><div id="color2" class="color' + numequipe  + '"></div><div id="target" ><img src="http://haum.org/images/noel.png"/></div></div>');
 		target = $('#target');
 		target.on('touchstart click', function() { game_win() });
 		game_hide();
