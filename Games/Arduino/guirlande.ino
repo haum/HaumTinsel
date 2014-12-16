@@ -95,6 +95,8 @@ void setup() {
 	animator.set_duration(3000);
 	animator.loop(true);
 	animator.start();
+
+	khroma.power.poweron();
 }
 
 void loop() {
