@@ -35,10 +35,12 @@ class Test():
         time.sleep(5)
         print artnet.own_ip
         print artnet.get_nodes()
-        artnet.join()
+        nb=input("Une touche pour arreter ")
+        # artnet.join()
+        
 
 class ArtNet(threading.Thread):
-    
+
     # default values
     hibernate = False
     socket_open = False
@@ -53,10 +55,10 @@ class ArtNet(threading.Thread):
     own_ip = "192.168.5.124"
     # own_ip = "0.0.0.0"
     nodes = []
-    
+
     def __init__(self, address=(0, 0), hibernate=False, use_unicast=False, ignore_local_data=True, data_length=512):
         threading.Thread.__init__(self)
-        
+
         # set method parameter values
         subnet, net = address
         if 0 <= subnet <= 15 and 0 <= net <= 127:
@@ -66,7 +68,7 @@ class ArtNet(threading.Thread):
         self.set_output_mode()
         self.ignore_local_data = ignore_local_data
         self.data_length = data_length
-        
+
         # for simplicity and speed this ArtNet implementation only works with multiplies of 512 channels
         if data_length % 512:
             print "Data length must be a multiple of 512."
@@ -76,20 +78,20 @@ class ArtNet(threading.Thread):
         self.universes = []
         for i in xrange(16):
             self.universes.append(bytearray([0] * 513))
-        
+
         # set random ip if ip_check failures
         # self.own_ip = "192.168.178.20"
         # random value to identify ip_checK_packet
         self.ip_check_id = random.randint(1, 1024)
-        
+
         # nodes list
         self.nodes = []
-        
+
         # prebuild packages and headers for faster access
         self.build_packages()
-    
+
                                                     ############ Flow Control ###############
-    
+
     def run(self):
         sleep = time.sleep
         while True:
@@ -103,7 +105,7 @@ class ArtNet(threading.Thread):
                     self.server()
             # wait to check again for hibernate and possibility to open socket
             sleep(1)
-    
+
     def open_socket(self):
         try:
             self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -122,22 +124,22 @@ class ArtNet(threading.Thread):
             self.socket_open = False
             print "Missing network connection."
             return False
-    
+
     def start_hibernate(self):
         self.hibernate = True
         self.kill_server()
         self.set_output_mode()
-    
+
     def stop_hibernate(self):
         self.hibernate = False
         self.set_output_mode()
-    
+
     def close(self):
         self.kill_server()
         print "ArtNet node stopped."
-    
+
                                                     ############ Server ###############
-    
+
     def server(self):
         # prepare
         opcode_ArtDMX = 0x5000
@@ -150,25 +152,30 @@ class ArtNet(threading.Thread):
         print "ArtNet node started."
         while True:
             data, addr = recvfrom(4096)
-            print ".... Data in .... from %s " % addr[0]
+            print ".... Data in .... from %s" % addr[0]
             if data[:8] != 'Art-Net\x00':
                 continue
             opcode = struct.unpack('<H', data[8:10])[0]
-            print "Received OpCode: %#x" % opcode
+            print "Received OpCode: %#x" % opcode ,
             if opcode == opcode_ArtDMX:
+                print " ArtDMX"
                 self.handle_ArtDMX(data, addr)
             elif opcode == opcode_ArtPoll:
+                print " ArtPoll"
                 self.handle_ArtPoll(data, addr)
             elif opcode == opcode_ArtPollReply:
+                print" ArtPollReply"
                 self.handle_ArtPollReply(data, addr)
             elif opcode == opcode_ip_check:
+                print " opcode_ip_check"
                 self.handle_ip_check(data, addr)
             elif opcode == opcode_kill:
+                print" opcode_kill"
                 if data[12:] == str("luminosus_kill_signal_%s" % self.ip_check_id):
                     print "stop server"
                     break
             else:
-                print "Received unknown package. OpCode: %#x" % opcode
+                print "unknown OpCode"
         # clean up
         self.s.close()
         self.socket_open = False
@@ -189,11 +196,11 @@ class ArtNet(threading.Thread):
         if addr[0] != self.own_ip and addr not in self.nodes:
             self.nodes.append(addr)
         self.ArtPollReply()
-    
+
     def handle_ArtPollReply(self, data, addr):
         if addr[0] != self.own_ip and addr not in self.nodes:
             self.nodes.append(addr)
-    
+
     def handle_ip_check(self, data, addr):
         if data[12:] == str("luminosus_ip_check_%s" % self.ip_check_id):
             self.own_ip = addr[0]
@@ -202,16 +209,16 @@ class ArtNet(threading.Thread):
                 if addr[0] == self.own_ip:
                     self.nodes.remove(addr)
             self.build_ArtPollReply()
-    
+
     def set_own_ip(self):
         self.s.sendto(self.ip_check_content, ('<broadcast>', 6454))
-    
+
     def ArtPoll(self):
         self.s.sendto(self.ArtPoll_content, ("<broadcast>", 6454))
-        
+
     def ArtPollReply(self):
         self.s.sendto(self.ArtPollReply_content, ("<broadcast>", 6454))
-    
+
     def add_artnet_node(self, node_ip):
         if node_ip not in self.nodes:
             self.nodes.append((node_ip, 6454))
@@ -244,19 +251,19 @@ class ArtNet(threading.Thread):
             self.address = address
             self.build_packages()
             return True
-    
+
     def get_nodes(self):
         return self.nodes
-    
+
     def get_subnet_data(self):
         return self.universes
-        
+
                                                     ############ Send Data ###############
-    
+
     def set_unicast(self, unicast=True):
         self.use_unicast = unicast
         self.set_output_mode()
-    
+
     def set_output_mode(self):
         if not self.hibernate:
             if  self.use_unicast:
@@ -269,7 +276,7 @@ class ArtNet(threading.Thread):
 
     def ArtDMX_dummy(self, dmxdata, universe=0):
         pass
-    
+
     def ArtDMX_unicast(self, dmxdata, universe=0):
         """ Data must be 1 * 512 0-255 int values. """
         content = bytearray(self.header_list[universe])
@@ -278,8 +285,8 @@ class ArtNet(threading.Thread):
         # send
         for addr in self.nodes:
             self.s.sendto(content, addr)
-        
-    
+
+
     def ArtDMX_broadcast(self, dmxdata, universe=0):
         """ Data must be 1 * 512 0-255 int values. """
         content = bytearray(self.header_list[universe])
@@ -287,32 +294,32 @@ class ArtNet(threading.Thread):
         content.extend(dmxdata)
         # send
         self.s.sendto(content, ('<broadcast>', 6454))
-    
+
     def send_data(self, data):
         """ Data must be data_length 0-1 float values. """
         if len(data) != self.data_length:
             return False
-        
+
 
         d = 255
         data = [int(v * d) for v in data]
-        
+
 
         for i in xrange(self.universe_count):
             self.send_dmx_data(data[i*512 : (i+1)*512], i)
-        
-        
+
+
                                                     ############ Header / Packet Contents ############
-        
+
     def build_packages(self):
         self.build_ArtPoll()
         self.build_ArtPollReply()
         self.build_ip_check()
-        
+
         self.header_list = []
         for u in xrange(16):
             self.header_list.append(self.get_ArtDMX_header(u))
-    
+
     def get_ArtDMX_header(self, universe=0, eternity_port=1):
         header = []
         # Name, 7byte + 0x00
@@ -334,7 +341,7 @@ class ArtNet(threading.Thread):
         header = "".join(header)
         header = bytearray(header)
         return header
-        
+
     def build_ArtPoll(self):
         content = []
         # Name, 7byte + 0x00
@@ -358,10 +365,10 @@ class ArtNet(threading.Thread):
         #   0   0
         #
         content.append(struct.pack('>H', 0b00000010))
-        # Priority 
-        content.append(chr(0xe0))           # DpCritical 
+        # Priority
+        content.append(chr(0xe0))           # DpCritical
         self.ArtPoll_content = "".join(content)
-    
+
     def build_ip_check(self):
         content = []
         # id8, 7byte + 0x00
@@ -373,7 +380,7 @@ class ArtNet(threading.Thread):
         # luminosus ip check
         content.append("luminosus_ip_check_%s" % self.ip_check_id)
         self.ip_check_content = ''.join(content)
-    
+
     def build_ArtPollReply(self):
         content = []
         # Name, 7byte + 0x00
@@ -429,7 +436,7 @@ class ArtNet(threading.Thread):
         # BindIndex
         # Status2
         # Filler
-        
+
         # stitch together
         self.ArtPollReply_content = ''.join(content)
         #print self.lang['send_ArtPollReply']
