@@ -22,12 +22,21 @@ LinearAnimator animator;
 int curcol = 0;
 int add_color = -1;
 
+#ifdef BUILD_PC
+CRGB colors[4] = {
+	{0xff, 0xff, 0x00},
+	{0x00, 0xff, 0xff},
+	{0xff, 0x00, 0xff},
+	{0xff, 0x00, 0x00},
+};
+#else
 CRGB colors[4] = {
 	CRGB::Yellow,
 	CRGB::Cyan,
 	CRGB::Purple,
 	CRGB::Red,
 };
+#endif
 
 void animate() {
 	animator.animate();
@@ -102,9 +111,25 @@ void setup() {
 void loop() {
 	khroma.loop_step();
 
+#ifndef BUILD_PC
 	while (Serial.available()) {
 		int input = Serial.read();
-		if (input >= '0' && input <= '3')
+		if (input >= '0' && input <= '3') {
 			add_color = input - '0';
+		} else if (input == 'S') {
+			int i, c, g;
+			for (g = 0; g < 4; ++g) {
+			for (i = 0; i < sizeof(gamedata[0])/sizeof(*gamedata[0]); ++i) {
+				for (c = 0; c < 4; ++c) {
+					if (colors[c] == gamedata[g][i]) {
+						Serial.print(c);
+					}
+				}
+				Serial.print(',');
+			}
+			}
+			Serial.print('\n');
+		}
 	}
+#endif
 }
