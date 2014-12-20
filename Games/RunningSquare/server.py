@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import serial
 import threading
 from time import sleep
@@ -17,6 +18,10 @@ class FlakeAdder(threading.Thread):
 
         self.iface = iface
         self.conn = serial.Serial(self.iface, 115200)
+        self.stop_gracefully = False
+
+    def quit(self):
+        self.stop_gracefully = True
 
     def renew_conn(self):
         try:
@@ -27,7 +32,7 @@ class FlakeAdder(threading.Thread):
 
     def run(self):
         with open(FIFO,'r') as f:
-            while True:
+            while not self.stop_gracefully:
 #                try:
                     code = str(f.readline()).strip()
                     if code:
@@ -36,6 +41,7 @@ class FlakeAdder(threading.Thread):
                     sleep(0.3)
 #                except:
 #                    self.renew_conn()
+            print 'Gracefully stopped'
 
 @route('/static/<f:path>')
 def static(f):
@@ -59,7 +65,17 @@ def game_win(code):
         return {'status': 'ok'}
 
 if __name__=='__main__':
+    with open('pid', 'w') as f:
+        f.write(str(os.getpid()))
+    try:
+        os.mkfifo(FIFO)
+    except OSError:
+        pass
     t = FlakeAdder()
     t.start()
     run(host='0.0.0.0', port=8080)
-
+    t.quit()
+    open(FIFO, 'a') # Generate FIFO event to stop t
+    t.join()
+    os.unlink(FIFO)
+    os.unlink('pid')

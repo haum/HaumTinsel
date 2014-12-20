@@ -1,6 +1,3 @@
 #!/bin/bash
 
-pid=$(cat pid)
-kill $pid
-rm pid
-rm fifo_bridge
+kill -INT $(cat pid) # Has to run in foreground to quit gracefully :-/
