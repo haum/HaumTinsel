@@ -61,6 +61,7 @@ class FlakeAdder(threading.Thread):
                 self.flakes_history = pickle.loads(f.read())
 	except IOError:
             pass
+	self.conn.write('\nR' + self.flakes_history['gamedata'] + '\n')
         with open(FIFO,'r') as f:
             while not self.stop_gracefully:
 #                try:
