@@ -129,6 +129,29 @@ void loop() {
 			}
 			}
 			Serial.print('\n');
+		} else if (input == 'R') {
+			char done = 0;
+			CRGB* pdata = &gamedata[0][0];
+			CRGB* pdata_end = &gamedata[0][0] + sizeof(gamedata)/sizeof(CRGB);
+			while (1) {
+				int input = Serial.read();
+				if (input == '\n' || input == '\r') {
+					break;
+				} else if (pdata <  pdata_end) {
+					if (input == ',') {
+						if (!done)
+							*pdata = CRGB::Black;
+						pdata++;
+						done = 0;
+					} else if (input >= '0' && input <= '3') {
+						*pdata = colors[input - '0'];
+						done = 1;
+					} else if (input != -1) {
+						*pdata = CRGB::Black;
+						done = 1;
+					}
+				}
+			}
 		}
 	}
 #endif
