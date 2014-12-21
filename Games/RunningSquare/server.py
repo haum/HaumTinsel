@@ -4,6 +4,7 @@
 import os
 import serial
 import threading
+import pickle
 from time import sleep
 from datetime import datetime
 from bottle import route, run, request, redirect, static_file
@@ -14,6 +15,7 @@ STATIC_ROOT="static/"
 BASE_ADDR="http://localhost:8080/"
 SERIAL_IFACE="/dev/ttyUSB0"
 FIFO="fifo_bridge"
+HISTORY="flakes_history.pickle"
 
 class FlakeAdder(threading.Thread):
 
@@ -50,6 +52,11 @@ class FlakeAdder(threading.Thread):
         line_chart.render_to_file(STATIC_ROOT+'chart.svg')
 
     def run(self):
+	try:
+            with open(HISTORY, 'r') as f:
+                self.flakes_history = pickle.loads(f.read())
+	except IOError:
+            pass
         with open(FIFO,'r') as f:
             while not self.stop_gracefully:
 #                try:
@@ -63,7 +70,9 @@ class FlakeAdder(threading.Thread):
                     sleep(0.3)
 #                except:
 #                    self.renew_conn()
-            print 'Gracefully stopped'
+        with open(HISTORY, 'w') as f:
+            f.write(pickle.dumps(self.flakes_history))
+        print 'Gracefully stopped'
 
 @route('/static/<f:path>')
 def static(f):
