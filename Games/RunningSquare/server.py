@@ -1,10 +1,14 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import serial
 import threading
 from time import sleep
+from datetime import datetime
 from bottle import route, run, request, redirect, static_file
+import pygal
+from pygal.style import Style
 
 STATIC_ROOT="static/"
 BASE_ADDR="http://localhost:8080/"
@@ -19,6 +23,7 @@ class FlakeAdder(threading.Thread):
         self.iface = iface
         self.conn = serial.Serial(self.iface, 115200)
         self.stop_gracefully = False
+        self.flakes_history = [[], [], [], [], [], '']
 
     def quit(self):
         self.stop_gracefully = True
@@ -29,13 +34,30 @@ class FlakeAdder(threading.Thread):
         finally:
             self.conn = serial.Serial(self.iface, 115200)
 
+    def process_tinsel_values(self, values):
+        self.flakes_history[0].append(values.count('0'))
+        self.flakes_history[1].append(values.count('1'))
+        self.flakes_history[2].append(values.count('2'))
+        self.flakes_history[3].append(values.count('3'))
+        self.flakes_history[4].append(datetime.now())
+        self.flakes_history[5] = values
+        line_chart = pygal.Line(style=Style(colors=('#ffff00', '#ff00ff', '#00ffff', '#ff0000')))
+        line_chart.title = u'Évolution de la couleur des flocons'
+        line_chart.add('', self.flakes_history[0])
+        line_chart.add('', self.flakes_history[1])
+        line_chart.add('', self.flakes_history[2])
+        line_chart.add('', self.flakes_history[3])
+        line_chart.render_to_file(STATIC_ROOT+'chart.svg')
 
     def run(self):
         with open(FIFO,'r') as f:
             while not self.stop_gracefully:
 #                try:
                     code = str(f.readline()).strip()
-                    if code:
+                    if code == 'S':
+                        self.conn.write('S')
+                        self.process_tinsel_values(self.conn.readline())
+                    elif code:
                         self.conn.write(code + '\n')
                         print code
                     sleep(0.3)
