@@ -47,7 +47,7 @@ class FlakeAdder(threading.Thread):
         self.flakes_history[3].append(values.count('3'))
         self.flakes_history['dates'].append(datetime.now())
         self.flakes_history['gamedata'] = values
-        line_chart = pygal.Line(style=Style(colors=('#ffff00', '#ff00ff', '#00ffff', '#ff0000')))
+        line_chart = pygal.Line(style=Style(colors=('#ffff00', '#00ffff', '#ff00ff', '#ff0000')))
         line_chart.title = u'Évolution de la couleur des flocons'
         line_chart.add('', self.flakes_history[0])
         line_chart.add('', self.flakes_history[1])
