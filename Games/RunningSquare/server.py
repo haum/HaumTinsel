@@ -25,7 +25,11 @@ class FlakeAdder(threading.Thread):
         self.iface = iface
         self.conn = serial.Serial(self.iface, 115200)
         self.stop_gracefully = False
-        self.flakes_history = [[], [], [], [], [], '']
+        self.flakes_history = {
+		0: [], 1:[], 2:[], 3:[],
+		'dates':[],
+		'gamedata':''
+	}
 
     def quit(self):
         self.stop_gracefully = True
@@ -41,8 +45,8 @@ class FlakeAdder(threading.Thread):
         self.flakes_history[1].append(values.count('1'))
         self.flakes_history[2].append(values.count('2'))
         self.flakes_history[3].append(values.count('3'))
-        self.flakes_history[4].append(datetime.now())
-        self.flakes_history[5] = values
+        self.flakes_history['dates'].append(datetime.now())
+        self.flakes_history['gamedata'] = values
         line_chart = pygal.Line(style=Style(colors=('#ffff00', '#ff00ff', '#00ffff', '#ff0000')))
         line_chart.title = u'Évolution de la couleur des flocons'
         line_chart.add('', self.flakes_history[0])
