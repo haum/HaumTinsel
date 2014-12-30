@@ -9,7 +9,7 @@
 <!-- ======================================================================== -->
 
 <metadata>
-<m key="abiword.date_last_changed">Tue Dec 30 20:15:38 2014
+<m key="abiword.date_last_changed">Tue Dec 30 21:49:08 2014
 </m>
 <m key="abiword.generator">AbiWord</m>
 <m key="dc.creator">beelab</m>
@@ -19,26 +19,27 @@
 </metadata>
 <rdf>
 </rdf>
-<history version="6" edit-time="3634" last-saved="1419966938" uid="a993b16e-904f-11e4-8097-bbdc18cda691">
+<history version="7" edit-time="3840" last-saved="1419972548" uid="a993b16e-904f-11e4-8097-bbdc18cda691">
 <version id="4" started="1419965172" uid="e7d93054-9057-11e4-8097-bbdc18cda691" auto="0" top-xid="40"/>
 <version id="5" started="1419966853" uid="0a327ec6-9058-11e4-8a12-dd09a4a3bad6" auto="0" top-xid="48"/>
 <version id="6" started="1419966938" uid="3d6033e2-9058-11e4-9e35-ac3adf9c0e63" auto="0" top-xid="49"/>
+<version id="7" started="1419972548" uid="4cc85de8-9065-11e4-81f5-c38b3f13bf0d" auto="0" top-xid="49"/>
 </history>
 <styles>
-<s type="P" name="Heading 1" basedon="Normal" followedby="Normal" props="keep-with-next:1; margin-top:22pt; font-weight:bold; margin-bottom:3pt; font-family:Arial; font-size:17pt"/>
-<s followedby="Current Settings" name="Normal" type="P" props="font-weight:normal; font-family:Times New Roman; margin-top:0pt; font-style:normal; margin-left:0pt; widows:2; text-position:normal; text-indent:0in; color:000000; font-variant:normal; bgcolor:transparent; margin-right:0pt; font-size:12pt; margin-bottom:0pt; text-decoration:none; line-height:1.0; text-align:justify; font-stretch:normal"/>
+<s type="P" name="Heading 1" basedon="Normal" followedby="Normal" props="font-size:17pt; margin-top:22pt; font-weight:bold; margin-bottom:3pt; font-family:Arial; keep-with-next:1"/>
+<s followedby="Current Settings" name="Normal" type="P" props="font-family:Times New Roman; margin-top:0pt; font-style:normal; margin-left:0pt; text-align:justify; widows:2; margin-bottom:0pt; text-indent:0in; font-variant:normal; line-height:1.0; text-decoration:none; bgcolor:transparent; margin-right:0pt; color:000000; font-size:12pt; font-weight:normal; text-position:normal; font-stretch:normal"/>
 </styles>
-<pagesize pagetype="A4" orientation="portrait" width="8.267717" height="11.692913" units="in" page-scale="1.000000"/>
+<pagesize pagetype="A4" orientation="portrait" width="210.000000" height="297.000000" units="mm" page-scale="1.000000"/>
 <section xid="5" props="page-margin-footer:0.5000in; page-margin-header:0.5000in; page-margin-right:1.0000in; page-margin-left:1.0000in; page-margin-top:1.0000in; page-margin-bottom:1.0000in">
-<p style="Heading 1" xid="6"><c props="font-size:16pt">Pour les fêtes, le HAUM présente une guirlande connectée</c></p>
+<p style="Heading 1" xid="6"><c props="font-size:16pt">Pour les fêtes, le HAUM présente une guirlande connectée</c><c props="font-size:16pt"></c></p>
 <p style="Normal" xid="4"><c></c><c></c></p>
 <p style="Normal" xid="20"><c></c>L’année 2014 s’achève et le HAUM propose au public de jouer avec sa guirlande interactive !</p>
 <p style="Normal" xid="8"><c></c><c></c></p>
-<p style="Normal" xid="37" props="text-align:justify; dom-dir:ltr">Le principe est simple : en jouant, le public peut modifier les couleurs de la guirlande du HAUM en direct et venir la voir. Elle est située à deux pas de la gare, au 19 bd. Marie &amp; Alexandre Oyon (2e étage, côté boulevard, à l’ouest du bâtiment).<c></c></p>
+<p style="Normal" xid="37" props="text-align:justify; dom-dir:ltr">Le principe est simple : en jouant, chacun peut modifier les couleurs de la guirlande du HAUM en direct et venir la voir. Elle est située à deux pas de la gare, au 19 bd. Marie &amp; Alexandre Oyon (2e étage, côté boulevard, à l’ouest du bâtiment).<c></c></p>
 <p style="Normal" xid="39"><c></c><c></c></p>
-<p style="Normal" xid="40" props="text-align:justify">Pour jouer, il suffit de se connecter sur <c></c><a xlink:href="guirlande.haum.org" xid="44">guirlande.haum.org</a>, choisir un pseudonyme et lancer le jeu. À chaque apparition du logo, il faut cliquer rapidement dessus avant qu’il ne disparaisse. Lorsque le logo a été touché, le joueur marque un point et change une des leds de la guirlande avec la couleur qui lui a été attribuée.</p>
+<p style="Normal" xid="40" props="text-align:justify">Pour jouer, il suffit de se connecter sur 2015.haum.org, choisir un pseudonyme et lancer le jeu. À chaque apparition du logo, il faut cliquer rapidement dessus avant qu’il ne disparaisse. Lorsque le logo a été touché, le joueur marque un point et change une des leds de la guirlande avec la couleur qui lui a été attribuée.</p>
 <p style="Normal" xid="38"><c></c><c></c></p>
-<p style="Normal" xid="19">Cette ingénieuse guirlande connectée a été imaginée par les membres du HAUM<c></c><c props="font-family:Times New Roman; font-size:12pt; color:000000; text-decoration:none; text-position:normal; font-weight:normal; font-style:normal; lang:fr-FR"> (Hackerspace au Mans)</c>. Cette association née en 2012 rassemble des passionnés de bricolage, de création et de technologie. Leurs buts sont d’apprendre, comprendre, partager, transmettre des connaissances et savoir-faire dans de nombreux domaines. Ses actions s’inscrivent dans la dynamique des mouvements Libre et DIY.</p>
+<p style="Normal" xid="19">Cette ingénieuse guirlande connectée a été imaginée par les membres du HAUM<c></c><c props="font-family:Times New Roman; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:fr-FR"> (Hackerspace au Mans)</c>. Cette association née en 2012 rassemble des passionnés de bricolage, de création et de technologie. Leurs buts sont d’apprendre, comprendre, partager, transmettre des connaissances et savoir-faire dans de nombreux domaines. Ses actions s’inscrivent dans la dynamique des mouvements Libre et DIY.</p>
 <p style="Normal" xid="21"><c></c><c></c></p>
 <p style="Normal" xid="47">Joyeuses fêtes !<c></c></p>
 <p style="Normal" xid="1" props="text-align:center"><c></c><image dataid="28162d82-9050-11e4-8097-bbdc18cda691" xid="3" props="height:3.7653in; width:6.2639in"/></p>
