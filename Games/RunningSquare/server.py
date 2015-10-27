@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 import os
@@ -17,19 +17,28 @@ SERIAL_IFACE="/dev/ttyUSB0"
 FIFO="fifo_bridge"
 HISTORY="flakes_history.pickle"
 
+class FakeConn:
+    def read(self, fake):
+        pass
+    def write(self, fake):
+        pass
+
 class FlakeAdder(threading.Thread):
 
     def __init__(self, iface=SERIAL_IFACE):
         threading.Thread.__init__(self)
 
         self.iface = iface
-        self.conn = serial.Serial(self.iface, 115200)
+        try:
+            self.conn = serial.Serial(self.iface, 115200)
+        except:
+            self.conn = FakeConn()
         self.stop_gracefully = False
         self.flakes_history = {
-		0: [], 1:[], 2:[], 3:[],
-		'dates':[],
-		'gamedata':''
-	}
+        0: [], 1:[], 2:[], 3:[],
+        'dates':[],
+        'gamedata':''
+    }
 
     def quit(self):
         self.stop_gracefully = True
@@ -56,12 +65,12 @@ class FlakeAdder(threading.Thread):
         line_chart.render_to_file(STATIC_ROOT+'chart.svg')
 
     def run(self):
-	try:
+        try:
             with open(HISTORY, 'r') as f:
                 self.flakes_history = pickle.loads(f.read())
-	except IOError:
+        except IOError:
             pass
-	self.conn.write('\nR' + self.flakes_history['gamedata'] + '\n')
+        self.conn.write('\nR' + self.flakes_history['gamedata'] + '\n')
         with open(FIFO,'r') as f:
             while not self.stop_gracefully:
 #                try:
