@@ -1,5 +1,5 @@
 [submodule "ArduinoArtNet"]
-	path = ArduinoArtNet
+	path = experiment/ArduinoArtNet
 	url = git@github.com:jblb/ArduinoArtNet.git
 [submodule "Games/Arduino/_submodules/arduino-mk"]
 	path = Games/Arduino/_submodules/arduino-mk
