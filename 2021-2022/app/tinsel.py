@@ -20,10 +20,16 @@ for i in range(64):
     tals[i] = colors[choice(list(colors.keys()))]
 
 def anim():
+    delay = 0.5
+    autoplay = 0
     while True:
         tals.leds.chans = tals.leds.chans[-9:] + tals.leds.chans[:-9]
+        if autoplay <= 0:
+            autoplay = 15*60/delay
+            tals[0] = colors[choice(list(colors.keys()))]
+        autoplay -= 1
         tals.leds.blit()
-        time.sleep(0.5)
+        time.sleep(delay)
 
 class TinselHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
